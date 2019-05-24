@@ -137,7 +137,34 @@ func main() {
 
 
 
-
+# Xử lý error
+Trong Go thì khi lỗi ngoại lệ xuất hiện, các hàm sẽ trả về một biến kiểu error chứa thông tin về lỗi đó. Ví dụ:
+```
+package main
+ 
+import "errors"
+import "fmt"
+ 
+func divide(arg1, arg2 int) (int, error) {
+    if arg2 == 0 {
+       return -1, errors.New("Can't divide by 0")
+    }
+    return arg1 / arg2, nil
+}
+ 
+func main() {
+    arg1 := 10
+    arg2 := 0
+    result, err := divide(arg1, arg2)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Println(result)
+    }
+}
+```
+dùng `errrors.New()` để tạo 1 biến kiểu error nhận đầu vào là chuỗi
+cái này tương tự với try catch trong python
 
 
 
