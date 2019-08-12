@@ -1,89 +1,265 @@
-# Viết chương trình đầu tiên
-Mở đầu 1 file thường sẽ là `package clause` và việc chỉ rõ tên
-của package để cho go biết file bạn đang code thuộc package nào
-và 1 file chỉ được thuộc 1 package
-
-Sau đó sẽ là hàm, hàm trong go có thể tái sử dụng và chạy được.
-Trong hàm sẽ chưa 1 đống code
-
-Hàm main (`func main`) là 1 hàm đặc biệt để chỉ xem chỗ nào Go sẽ
-thực thi
+## Packages
+Mỗi chương trình go bắt đầu với 1 package 
 
 ```
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
+
 func main() {
-  fmt.Println("Hello")
+	fmt.Println("My favorite number is", rand.Intn(10))
 }
 ```
+Đoạn code trên bắt đầu với package main
 
-fmt là 1 thư viên có những function cơ bản. Ở trên bạn gọi ra function `println`
+Đoạn code này bắt đầu với package `main` và import path là `fmt` và `math/rand`
 
-```
-Để chạy code ta gõ `go run main.go`
-
-
-## Sự khác biệt nhỏ nhỏ giữa print, printf, println
-```
-Printf --> "Print Formatter" Hàm này cho phép ta gán chữ hoặc số và dãy
-
-VD: `fmt.Printf("%s is cool", "Bob") `
-
-Println --> "Print Line" In ra bình thường và có cái `/n` ở cuối
-
-Print --> "Print" giống `println` nhưng không có `/n ơ dưới
-
-## Package
-- Đầu tiên tất cả các file trong package phải ở trong cùng 1 thư mục trên hệ điều hành
-- Tiếp theo tuy không bắt buộc nhưng 1 thư mục chỉ nên có 1 package
-- Tất cả mọi chương trình Go đều phải được bắt đầu bởi câu lệnh khai báo gói. Giúp cho việc tái sử dụng
-
+Nếu bạn để math/rand thì nó chỉ nhận rand thôi không nhận math
 
 ## Import
-- Yêu cầu sử dụng các gói khác từ trong chương trình gói `fmt` ở đây để đọc dữ liệu ra vào 
+Có 2 cách để viết import
+- C1: 
+```
+import (
+	"fmt"
+	"math/rand"
+)
+```
+- C2:
+```
+import "fmt"
+import "math"
+```
 
-## Func
-- Là thành phần xây dựng nên 1 chương trình. Xử lí dữ liệu, đọc dữ liệu, xuất dữ liệu.
-Hàm main là hàm đặc biệt vì nó sẽ được excute khi chạy
+T thích cách 2 hơn và nhớ rằng tên package phải trong dấu ngoặc kép
 
-# Các kiểu dữ liệu
-## Số nguyên
-Số nguyên trong go được biểu diễn bởi
-![image](https://user-images.githubusercontent.com/45547213/58007239-10a01600-7b14-11e9-92cf-a0ae7485ec8d.png)
-- Cứ cái nào có u thì cái đấy ko lưu được số âm và số 8,16,32 để chỉ số bit cần để lữu trữ những số được khai báo
+## Exported names
+Trong go, các hàm các biến bạn lấy ra từ các library bạn đã import phải được viết hoa chữ đầu tiên
 
-## Số thực 
-- Để dùng số thực chúng ta dùng `float64` là đủ
+Ví dụ
+```
+math.Pi
+```
+còn nếu là:
+```
+math.pi
+```
+nó sẽ lỗi ngay. 
 
-## String
-- String (chuỗi) là các kí tự được bọc trong cặp dấu nháy kép hoặc nháy đơn được dùng để biểu diễn văn bản. 
-String nằm trong dấu nháy kép có thể sử dụng các kí tự điều khiển đặc biệt như `\n` là xuống dòng, `\t` là dấu tab.
+## Functions
+Đây là cách khai báo 1 hàm
 ```
 package main
- 
-import "fmt"
- 
-func main() {
-    fmt.Println(len("Hello World")) # Chúng ta có thể in ra độ dài của chuỗi
-    fmt.Println("Hello World"[1]) # In ra 1 giá trị trong chuỗi
-    fmt.Println("Hello " + "World") # Cộng 2 chuỗi
-} 
-```
 
-## Boolean
-Có 2 giá trị True và False
-- Các phép toán go có `or`,`and`,`not`
-```
-package main
- 
 import "fmt"
- 
+
+func add(x int, y int) int {
+	return x + y
+}
+
 func main() {
-    fmt.Println(true && false)
-    fmt.Println(true && false)
-    fmt.Println(true || true)
-    fmt.Println(true || false)
-    fmt.Println(!true)
+	fmt.Println(add(42, 13))
 }
 ```
+nhớ rằng kiểu biến đi sau tên biến và biến nó trả về cái gì phải định nghĩa kiểu cho nó luôn
+hoặc bạn có thể khai báo kiểu như này và hàm có thể không cần nhận tham số nào hoặc nhiều tham số, tùy vào bạn muốn
+```
+func add(x, y int) int {
+	return x + y
+}
+```
+Ngoài ra hàm cũng có thể trả về nhiều giá trị
+```
+package main
+
+import "fmt"
+
+func swap(x, y string) (string, string) {
+	return y, x
+}
+
+func main() {
+	a, b := swap("hello", "world")
+	fmt.Println(a, b)
+}
+```
+
+### naked return
+```
+package main
+
+import "fmt"
+
+func split(sum int) (x, y int) {
+	x = sum * 4 / 9
+	y = sum - x
+	return
+}
+
+func main() {
+	fmt.Println(split(17))
+}
+```
+Cái return ở đây chống thì nó sẽ hiểu là auto trả về x, y
+
+## Variables
+Đây là cách khai báo biến
+```
+package main
+
+import "fmt"
+
+var c, python, java bool
+
+func main() {
+	var i int
+	fmt.Println(i, c, python, java)
+}
+```
+
+bắt đầu bắt buộc phải có var sau đó là tên biến rồi kiểu biến
+
+bạn cũng có thể set giá trị cho chúng luôn
+```
+package main
+
+import "fmt"
+
+var i, j int = 1, 2
+
+func main() {
+	var c, python, java = true, false, "no!"
+	fmt.Println(i, j, c, python, java)
+}
+```
+
+Còn 1 cách nhanh để khai báo
+```
+i := 3
+```
+
+Đây là các kiểu dữ liệu trong go
+```
+bool
+
+string
+
+int  int8  int16  int32  int64
+uint uint8 uint16 uint32 uint64 uintptr
+
+byte // alias for uint8
+
+rune // alias for int32
+     // represents a Unicode code point
+
+float32 float64
+
+complex64 complex128
+```
+### zero values
+1 biến khi khai báo chưa được set giá trị sẽ thành zero value
+- 0 cho loại num
+- false cho bool
+- "" cho string
+
+### ép kiểu 
+đây là cách ép kiểu 
+```
+var i int = 42
+var f float64 = float64(i)
+var u uint = uint(f)
+```
+ngắn gọn hơn
+```
+i := 42
+f := float64(i)
+u := uint(f)
+```
+### Gán biến
+Khi biến không được gán kiểu dữ liệu thì nó sẽ nhận kiểu dữ liệu của biến nó được gán 
+```
+var i int
+j := i // j is an int
+```
+
+nếu không sẽ dựa vào go
+```
+i := 42           // int
+f := 3.142        // float64
+g := 0.867 + 0.5i // complex128
+```
+
+### Constants
+biến constant được gán như variable, có thể là bool, num hay string nó không thể được khai báo kiểu `:=`
+```
+package main
+
+import "fmt"
+
+const Pi = 3.14
+
+func main() {
+	const World = "世界"
+	fmt.Println("Hello", World)
+	fmt.Println("Happy", Pi, "Day")
+
+	const Truth = true
+	fmt.Println("Go rules?", Truth)
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
