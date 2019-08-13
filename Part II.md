@@ -1,78 +1,224 @@
-# Biến
-## Cấu trúc
-Gồm 3 phần 
-- Tên biến
-- Kiểu dữ liệu
-- Giá trị
+## For
+Go có đúng 1 vòng lặp duy nhất đó là vòng for
+
+1 vòng for cơ bản có 3 thành phần chính
+- init statement: chạy trước vòng lặp đầu tiên
+- condittion expression: nơi để điều kiện lặp
+- post statement: chạy khi kết thúc vòng lặp
+
+Và các thành phần này được ngăn cách bởi dấu `;`, và vòng lặp kết thúc khi condittion expression trả về false
+
 ```
 package main
- 
+
 import "fmt"
- 
+
 func main() {
-    var x string = "Hello World"
-    fmt.Println(x)
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
 }
 ```
 
-Để khai báo chúng ta dùng `var` + tên biến + kiểu dữ liệu = giá trị 
-
-## Đặc điểm
-- Gán giá trị: Bạn có thể định dạng cấu trúc dữ liệu trước rồi gán giá trị vào sau cũng được
++ Thực ra init statement và post statement không bắt buộc phải có
 ```
-var x string
-    x  = "Hello World"
-    fmt.Println(x);
+for ; sum < 1000; {
+		sum += sum
+	}
 ```
 
-- Giá trị của biến có thể thay đổi được
++ Khi bạn bỏ 2 dấu ; đi thì for trở thành while
 ```
-var x string
-    x = "first"
-    fmt.Println(x)
-    x = "second"
-    fmt.Println(x)
+for sum < 1000 {
+		sum += sum
+	}
 ```
 
-- Gán giá trị nhanh
++ Bạn cũng có thể tạo 1 vòng for vĩnh viễn
 ```
-x := "Hello World"
+for {
+	}
 ```
 
-- Tên biến bạn có thể đặt thoải mái
-Các biến được khai báo ở ngoài func trong func có thể truy cập được nhưng biến được khai báo ở trong func thì chỉ sử dụng được 
-ở trong func đó thôi 
+## if 
+lệnh `if` cũng giống lệnh for, không cần phải trong dấu ngoặc nhưng phải trong dấu ngoặc `{}`
+
 ```
 package main
- 
-import "fmt"
- 
-var x string = "Hello World"
- 
+
+import (
+	"fmt"
+	"math"
+)
+
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
 func main() {
-    fmt.Println(x)
+	fmt.Println(sqrt(2), sqrt(-4))
 }
 ```
 
-- Hằng số
-Khi bạn thêm `const` trước khi tạo biến thì biến đó sẽ không thể bị thay đổi giá trị được nữa
+Giống for, if cũng có thể có 1 mệnh đề để chạy trước khi vào mệnh đề điều kiện 
+
+Biến trong mệnh đề chỉ tồn tại cho đến hết vòng if
 ```
 package main
- 
-import "fmt"
- 
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	}
+	return lim
+}
+
 func main() {
-    const x string = "Hello World"
-    fmt.Println(x)
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+ ```
+
+## Switch 
+
+Switch là 1 cách nhanh gọn hơn để viết if else
+```
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	fmt.Print("Go runs on ")
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("Linux.")
+	default:
+		// freebsd, openbsd,
+		// plan9, windows...
+		fmt.Printf("%s.\n", os)
+	}
+```
+
+Bạn cũng có thể viết 1 switch không condittion gọi là switch true
+```
+func main() {
+	t := time.Now()
+	switch {
+	case t.Hour() < 12:
+		fmt.Println("Good morning!")
+	case t.Hour() < 17:
+		fmt.Println("Good afternoon.")
+	default:
+		fmt.Println("Good evening.")
+	}
 }
 ```
-- Khai báo nhiều biến
+
+## Defer 
+defer statement sẽ chạy khi các lệnh xung quanh nó chạy xong rồi
 ```
-var (
-a = 1,
-b = 2, 
-c = 3,
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println("world")
+
+	fmt.Println("hello")
+	fmt.Println("hello")
+}
 ```
+
+kể cả nó ở trong vòng lặp
+
+
+```
+func main() {
+	fmt.Println("counting")
+
+	for i := 0; i < 10; i++ {
+		defer fmt.Println(i)
+	}
+
+	fmt.Println("done")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
