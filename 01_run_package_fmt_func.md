@@ -29,9 +29,9 @@ Chúng ta sẽ trả lời lần lượt 5 câu hỏi dưới đây
 
 - Thế tại sao phải tên là main? Vì trong go có 2 loại package **excutable package** và **reuseable package**
 
-- excutable package: Dùng để có thể build ra 1 file excutable được.
+- **excutable package**: Dùng để có thể build ra 1 file excutable được.
 
-- reuseable package: Dùng để vứt code vào đấy và gọi ra khi cần
+- **reuseable package**: Dùng để vứt code vào đấy và gọi ra khi cần
 
 - Cách phân biệt duy nhất giữa 2 loại package này là excutable package phải tên là main `package main` còn nếu đặt tên khác nó sẽ là reuseable package. Và package main phải có hàm main
 
@@ -45,3 +45,18 @@ Chúng ta sẽ trả lời lần lượt 5 câu hỏi dưới đây
 
 - Import có thể import cả package chúng ta tự viết ra chứ không chỉ ở mỗi standard library của go
 
+## 4. Func là gì
+
+- Func là viết tắt là function
+
+![image](https://user-images.githubusercontent.com/45547213/69390002-524a8d00-0d00-11ea-9c91-456596724fdf.png)
+
+## 5. Tổ chức file go như nào?
+
+- Đầu tiên khai báo file thuộc package nào
+
+- Import các package khác vào
+
+- Phần code chứa function và vài thứ khác
+
+![image](https://user-images.githubusercontent.com/45547213/69390159-eddbfd80-0d00-11ea-869a-7eb947574674.png)
