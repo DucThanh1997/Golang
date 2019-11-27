@@ -27,10 +27,16 @@ func main() {
 	deck1 := newDeck()
 	fmt.Println("deck: ", deck1)
 
-	deck11, deck12 := deal(deck1, 20)
+	// deck11, deck12 := deal(deck1, 20)
 
-	fmt.Println(len(deck11))
-	fmt.Println(len(deck12))
+	// cards1 := newDeck()
+
+	// cards1.saveToFile("a")
+
+	cards2 := newDeckFromFile("a")
+
+	cards2.shuffle()
+	fmt.Println("cards2: ", cards2)
 }
 
 // function tên newCard không nhận tham số đầu vào nào và trả về string
