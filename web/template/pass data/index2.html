@@ -1,0 +1,25 @@
+<!DOCTPYE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Hello </title>
+    </head>
+    <body>
+        <ul>
+            <!-- với slice-->
+            {{range $index, $element := .}}
+            <li>{{ $index }} -  {{ $element }}</li>
+            {{ end }}
+            <!-- với maps
+            {{range $key, $value := .}}
+            <li>{{ $key }} -  {{ $value }}</li>
+            {{ end }}
+            -->
+            <!-- với struct
+            {{range  .}}
+            <li>{{ .name }} -  {{ .motto }}</li>
+            {{ end }}
+            -->
+        </ul>
+    </body>
+</html>
