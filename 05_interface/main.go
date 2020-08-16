@@ -32,5 +32,9 @@ func main() {
 	eb := englishBot{}
 	sb := spanishBot{}
 	fmt.Println(sb)
-	printGreeting(eb)
+	printGreetingS(eb)
 }
+
+// interface không phải là generic
+// golang tự biết những type nào thuộc interface nào mà không cần bạn phải link
+//

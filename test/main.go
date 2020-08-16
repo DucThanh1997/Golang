@@ -1,19 +1,25 @@
 package main
 
-import (  
+import (
+    "flag"
     "fmt"
 )
 
-func producer(chnl chan int) {  
-    for i := 0; i < 10; i++ {
-        chnl <- i
-    }
-    close(chnl)
-}
-func main() {  
-    ch := make(chan int)
-    go producer(ch)
-    for v := range ch {
-        fmt.Println("Received ",v)
-    }
+func main() {
+
+    wordPtr := flag.String("word", "foo", "a string")
+
+    numbPtr := flag.Int("numb", 42, "an int")
+    boolPtr := flag.Bool("fork", false, "a bool")
+
+    var svar string
+    flag.StringVar(&svar, "svar", "bar", "a string var")
+
+    flag.Parse()
+
+    fmt.Println("word:", *wordPtr)
+    fmt.Println("numb:", *numbPtr)
+    fmt.Println("fork:", *boolPtr)
+    fmt.Println("svar:", svar)
+    fmt.Println("tail:", flag.Args())
 }

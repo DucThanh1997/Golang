@@ -5,6 +5,7 @@ import "fmt"
 func main() {
 	// tạo 1 map tên color có key là kiểu string và value là kiểu string
 	// key và value chỉ có thể được gán bởi 1 kiểu giá trị
+	// key trong dấu [] còn value ở ngoài
 	colors := map[string]string{
 		"red": "#ff0000",
 		"green": "#4bf745",
