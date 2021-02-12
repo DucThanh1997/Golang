@@ -1,5 +1,5 @@
 ## Variable
-- `var` tạo 1 biến của 1 type cụ thể nào đó, đặt tên cho nó và đặt giá trị khoeir tạo cho nó
+- `var` tạo 1 biến của 1 type cụ thể nào đó, đặt tên cho nó và đặt giá trị khởi tạo cho nó
 ```
 var name type = expression
 ```

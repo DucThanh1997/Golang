@@ -35,7 +35,7 @@ type Writer interface {
 // Implementations must not retain p.
 Write(p []byte) (n int, err error)
 }
-``
+```
 - `io.Writer` interface định nghĩa mối ràng buộc giữa `Fprintf` và cái gọi chúng. 
 
 - Ở 1 mặt, mối ràng buộc này yêu cầu khi gọi nó phải cung cấp 1 kiểu cố định như `*os.File or *bytes.Buffer` mà có method Write với đầu vào đầu ra phù hợp 
