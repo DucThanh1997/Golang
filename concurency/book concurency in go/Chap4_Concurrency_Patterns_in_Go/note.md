@@ -75,4 +75,79 @@ for {
 ```
 
 ## Preventing Goroutine Leaks
+they do cost resources, and goroutines are not garbage collected by the runtime, so regardless of how small their memory footprint is, we don’t want to leave them lying
+about our process
 
+Goroutine chạy sẽ cần tài nguyên và goroutine không được `garbage collected` bởi go runtime, vậy nên dù chúng có tốn ít tài nguyên như thế nào, chúng ta cũng ko muốn chúng tồn tại trong chương trình khi đã không cần đến nữa. Vậy khi nào thì những tài nguyên của goroutine cần được loại bỏ
+
+- Khi goroutine đã chạy xong
+- Khi chúng không thể tiếp tục được nữa vì một vấn đề gì đó xảy ra
+- Khi chúng được ra lệnh là phải dừng lại
+
+2 cái đầu thì có thể tự xử lý đơn giản bởi go. Cái sau thì thường truyền 1 done channel vào, bh done thì main goroutine đóng cái close lại để thằng goroutine con biết đường mà return nhằm tránh cái việc tài nguyên ko bị dọn dẹp 
+```
+func main() {
+	doWork := func(done <-chan interface{}, strings <-chan string) <-chan interface{} { // số 1
+		terminated := make(chan interface{})
+		go func() {
+			defer fmt.Println("doWork exited.")
+			defer close(terminated)
+			for {
+				select {
+				case s := <-strings:
+					// Do something interesting
+					fmt.Println(s)
+				case <-done: // số 2
+					return
+				}
+			}
+		}()
+		return terminated
+	}
+	done := make(chan interface{})
+	terminated := doWork(done, nil)
+	go func() { // số 3
+		// Cancel the operation after 1 second.
+		time.Sleep(1 * time.Second)
+		fmt.Println("Canceling doWork goroutine...")
+		close(done)
+	}()
+	<-terminated // số 4
+	fmt.Println("Done.")
+}
+```
+
+## Or channel pattern
+Đôi khi, bạn muốn kết hợp một hoặc nhiều done channel thành một done channel duy nhất và done channel này sẽ đóng nếu bất kỳ channel thành phần nào của nó đóng. Hoàn toàn có thể chấp nhận được, mặc dù dài dòng, để viết một câu lệnh chọn thực hiện khớp nối này; tuy nhiên, đôi khi bạn không thể biết số lượng done channel mà bạn đang làm việc trong thời gian chạy. Trong trường hợp này, bạn có thể kết hợp các channel này với nhau bằng cách sử dụng the or-channel pattern.
+
+```
+var or func(channels ...<-chan interface{}) <-chan interface{}
+or = func(channels ...<-chan interface{}) <-chan interface{} { // số 1
+    switch len(channels) {
+    case 0: // số 2
+        return nil
+    case 1: // số 3
+        return channels[0]
+    }
+    orDone := make(chan interface{})
+    go func() { // số 4
+        defer close(orDone)
+        switch len(channels) {
+        case 2: // số 5
+            select {
+                case <-channels[0]:
+                case <-channels[1]:
+            }
+            default: // số 6
+                select {
+                case <-channels[0]:
+                case <-channels[1]:
+                case <-channels[2]:
+                case <-or(append(channels[3:], orDone)...): // số 6
+            }
+        }
+    }()
+    return orDone
+```
+
+## Error handling
