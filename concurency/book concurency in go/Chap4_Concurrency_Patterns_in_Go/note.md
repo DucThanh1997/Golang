@@ -150,4 +150,5 @@ or = func(channels ...<-chan interface{}) <-chan interface{} { // số 1
     return orDone
 ```
 
-## Error handling
+## Fan-out, Fan-in
+Fan-out là thuật ngữ mô tả quá trình bắt đầu nhiều goroutine để xử lý input từ pipeline và fan-in là thuật ngữ mô tả quá trình kết hợp nhiều kết quả vào một channel
